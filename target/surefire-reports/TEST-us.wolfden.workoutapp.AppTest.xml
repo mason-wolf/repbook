@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="us.wolfden.workoutapp.AppTest" time="0.009" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="us.wolfden.workoutapp.AppTest" time="0.011" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="22"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\Mason\Downloads\workoutapp\workoutapp\target\test-classes;C:\Users\Mason\Downloads\workoutapp\workoutapp\target\classes;C:\Users\Mason\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
+    <property name="java.class.path" value="C:\Users\Mason\Downloads\workoutapp\workoutapp\target\test-classes;C:\Users\Mason\Downloads\workoutapp\workoutapp\target\classes;C:\Users\Mason\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;C:\Users\Mason\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar;C:\Users\Mason\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.15.0\jackson-databind-2.15.0.jar;C:\Users\Mason\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.15.0\jackson-core-2.15.0.jar;C:\Users\Mason\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.15.0\jackson-annotations-2.15.0.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -15,9 +15,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Users\Mason\.jdks\openjdk-22.0.2\bin"/>
-    <property name="sun.java.command" value="C:\Users\Mason\AppData\Local\Temp\surefire13406784444985249929\surefirebooter-20240815212601611_3.jar C:\Users\Mason\AppData\Local\Temp\surefire13406784444985249929 2024-08-15T21-26-01_553-jvmRun1 surefire-20240815212601611_1tmp surefire_0-20240815212601611_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Mason\AppData\Local\Temp\surefire780846038694662704\surefirebooter-20240816175154996_3.jar C:\Users\Mason\AppData\Local\Temp\surefire780846038694662704 2024-08-16T17-51-54_943-jvmRun1 surefire-20240816175154996_1tmp surefire_0-20240816175154996_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\Mason\Downloads\workoutapp\workoutapp\target\test-classes;C:\Users\Mason\Downloads\workoutapp\workoutapp\target\classes;C:\Users\Mason\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\Mason\Downloads\workoutapp\workoutapp\target\test-classes;C:\Users\Mason\Downloads\workoutapp\workoutapp\target\classes;C:\Users\Mason\.m2\repository\junit\junit\3.8.1\junit-3.8.1.jar;C:\Users\Mason\.m2\repository\org\projectlombok\lombok\1.18.30\lombok-1.18.30.jar;C:\Users\Mason\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.15.0\jackson-databind-2.15.0.jar;C:\Users\Mason\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.15.0\jackson-core-2.15.0.jar;C:\Users\Mason\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.15.0\jackson-annotations-2.15.0.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\Mason"/>
     <property name="user.language" value="en"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Mason\AppData\Local\Temp\surefire13406784444985249929\surefirebooter-20240815212601611_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Mason\AppData\Local\Temp\surefire780846038694662704\surefirebooter-20240816175154996_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="22.0.2+9-70"/>
