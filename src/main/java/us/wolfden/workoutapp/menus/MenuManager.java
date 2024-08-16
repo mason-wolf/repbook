@@ -1,0 +1,7 @@
+package us.wolfden.workoutapp.menus;
+
+public class MenuManager {
+    public static void displayMenu(Menu menu) {
+        menu.display();
+    }
+}
