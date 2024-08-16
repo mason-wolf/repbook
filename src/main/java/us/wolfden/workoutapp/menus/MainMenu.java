@@ -29,16 +29,14 @@ public class MainMenu implements Menu {
     @Override
     public void handleSelection() {
         Scanner scanner = new Scanner(System.in);
-        boolean appRunning = true;
+        System.out.print("> ");
+        String choice = scanner.nextLine();
 
-        while (appRunning) {
-            System.out.print("> ");
-            String choice = scanner.nextLine();
-
-            if (choice.equals("3")) {
-                appRunning = false;
-                MenuManager.displayMenu(new MainMenu());
-            }
+        if (choice.equals("1")) {
+            MenuManager.displayMenu(new AddWorkoutMenu());
+        }
+        if (choice.equals("3")) {
+            MenuManager.displayMenu(new MainMenu());
         }
     }
 }
