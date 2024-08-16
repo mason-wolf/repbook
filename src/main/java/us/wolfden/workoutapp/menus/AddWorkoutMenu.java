@@ -28,6 +28,7 @@ public class AddWorkoutMenu implements Menu {
 
     @Override
     public void handleSelection() {
+        MenuManager.clear();
         System.out.print("Workout Name: ");
         Scanner scanner = new Scanner(System.in);
         System.out.print(scanner.nextLine());
