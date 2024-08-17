@@ -24,7 +24,7 @@ public class RoutineMenu implements Menu {
 
     @Override
     public void display() {
-        MenuManager.clear();
+        MenuManager.clearMenu();
         handleSelection();
     }
     
@@ -50,6 +50,7 @@ public class RoutineMenu implements Menu {
             }
             
             if (choice.equals("3")) {
+                selectionMade = true;
                 MenuManager.displayMenu(new MainMenu());
             }
         }

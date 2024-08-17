@@ -19,7 +19,7 @@ public class AddWorkoutMenu implements Menu {
     private Workout workout;
     private final WorkoutService workoutService;
     private final ExerciseManager exerciseManager;
-    
+
     public AddWorkoutMenu() {
         workoutService = new WorkoutServiceImpl();
         exerciseManager = new ExerciseManager();
@@ -36,7 +36,7 @@ public class AddWorkoutMenu implements Menu {
 
     @Override
     public void display() {
-        MenuManager.clear();
+        MenuManager.clearMenu();
         handleSelection();
     }
 
@@ -66,7 +66,7 @@ public class AddWorkoutMenu implements Menu {
     }
     
     private void confirmSaveWorkout() {
-                MenuManager.clear();
+                MenuManager.clearMenu();
                 System.out.println("Workout: " + workout.getName());
                 System.out.println("Date: " + workout.getDate());
                 workout.getExercises().forEach(e -> {

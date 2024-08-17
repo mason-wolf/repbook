@@ -30,7 +30,7 @@ public class AddRoutineMenu implements Menu {
 
     @Override
     public void display() {
-        MenuManager.clear();
+        MenuManager.clearMenu();
         handleSelection();
     }
     

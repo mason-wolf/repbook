@@ -32,18 +32,18 @@ public class ViewWorkoutsMenu implements Menu {
 
     @Override
     public void display() {
-        MenuManager.clear();
+        MenuManager.clearMenu();
         handleSelection();
     }
     
     @Override
     public void handleSelection() {
         List<Workout> workouts = workoutService.getWorkouts();
-        
-        workouts.forEach(workout -> {
-           System.out.println(workout.getId() + "\t\t" + workout.getDate() + "\t\t" + workout.getName()); 
-        });
-        
+
+        for (Workout workout : workouts) {
+            System.out.println(workout.getId() + "\t\t" + workout.getDate() + "\t\t" + workout.getName());
+        }
+
         options.forEach(System.out::println);
         
         boolean selectionMade = false;

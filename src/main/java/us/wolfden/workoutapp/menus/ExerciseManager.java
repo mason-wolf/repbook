@@ -6,7 +6,7 @@ import java.util.Scanner;
  * Provides commonly shared logic associated with managing exercises.
  * May be used with other views to include workout and routine management.
  */
-public class ExerciseManager {
+public class ExerciseManager extends AbstractExerciseManager {
     public Exercise addExercise() {
            Scanner scanner = new Scanner(System.in);
                 System.out.print("Exercise Name: ");

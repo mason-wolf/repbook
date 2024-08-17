@@ -1,5 +1,6 @@
 us\wolfden\workoutapp\menus\MenuManager.class
 us\wolfden\workoutapp\menus\MainMenu.class
+us\wolfden\workoutapp\menus\AbstractExerciseManager.class
 us\wolfden\workoutapp\models\Exercise.class
 us\wolfden\workoutapp\menus\Menu.class
 us\wolfden\workoutapp\services\WorkoutService.class
@@ -9,6 +10,7 @@ us\wolfden\workoutapp\menus\RoutineMenu.class
 us\wolfden\workoutapp\models\Exercise$ExerciseBuilder.class
 us\wolfden\workoutapp\menus\AddWorkoutMenu.class
 us\wolfden\workoutapp\menus\ExerciseManager.class
+us\wolfden\workoutapp\menus\AbstractMenuManager.class
 us\wolfden\workoutapp\services\WorkoutServiceImpl.class
 us\wolfden\workoutapp\services\WorkoutServiceImpl$1.class
 us\wolfden\workoutapp\models\Workout.class
