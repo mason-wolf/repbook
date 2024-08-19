@@ -3,7 +3,7 @@ package us.wolfden.workoutapp.menus;
 /***
  * Controls menu views and manages menu states.
  */
-public class MenuManager extends AbstractMenuManager {
+public class MenuManager {
 
     public static void displayMenu(Menu menu) {
         clearMenu();
