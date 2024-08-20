@@ -4,6 +4,11 @@ import us.wolfden.workoutapp.models.Workout;
 import us.wolfden.workoutapp.repositories.WorkoutRepository;
 import java.util.List;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 public class WorkoutServiceImpl implements WorkoutService {
 
     private final WorkoutRepository workoutRepository;
@@ -24,7 +29,12 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public List<Workout> getWorkouts() {
-        return workoutRepository.findAll();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+
+    return workoutRepository.findAll().stream()
+        .sorted(Comparator.comparing(workout -> LocalDate.parse(workout.getDate(), formatter)))
+        .collect(Collectors.toList());
+        
     }
 
     @Override
