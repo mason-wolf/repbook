@@ -1,10 +1,13 @@
 package us.wolfden.workoutapp.menus;
 
 import us.wolfden.workoutapp.models.Workout;
+import us.wolfden.workoutapp.models.Routine;
 import us.wolfden.workoutapp.models.Exercise;
 
 import us.wolfden.workoutapp.services.WorkoutService;
 import us.wolfden.workoutapp.services.WorkoutServiceImpl;
+import us.wolfden.workoutapp.services.RoutineService;
+import us.wolfden.workoutapp.services.RoutineServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,9 +21,11 @@ public class AddWorkoutMenu implements Menu {
     private final List<String> options = new ArrayList<>();
     private Workout workout;
     private final WorkoutService workoutService;
+    private final RoutineService routineService;
     private final ExerciseManager exerciseManager;
 
     public AddWorkoutMenu() {
+        routineService = new RoutineServiceImpl();
         workoutService = new WorkoutServiceImpl();
         exerciseManager = new ExerciseManager();
         options.add("1. Add Exercise");
@@ -69,15 +74,36 @@ public class AddWorkoutMenu implements Menu {
                 MenuManager.clearMenu();
                 System.out.println("Workout: " + workout.getName());
                 System.out.println("Date: " + workout.getDate());
-                workout.getExercises().forEach(e -> {
+                showExercises();
+                System.out.println();
+                System.out.println("Log this workout? (y/n)");  
+    }
+    
+    private void showExercises() {
+                 workout.getExercises().forEach(e -> {
                     System.out.println();
                     System.out.println("Exercise: " + e.getName());
                     System.out.println("Sets: " + e.getSets());
                     System.out.println("Reps: " + e.getReps());
                     System.out.println();
-                });
-                System.out.println();
-                System.out.println("Log this workout? (y/n)");  
+                });       
+    }
+    
+    private void addRoutine() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Routine ID: ");
+        String routineId = scanner.nextLine();
+        Routine routine = routineService.getRoutineById(routineId);
+        if (routine == null) {
+            System.out.println("Routine with ID " + routineId + " not found.");
+        }
+        else {
+            for (Exercise exercise : routine.getExercises()) {
+                workout.addExercise(exercise);
+            }
+            showExercises();
+            System.out.println("Routine '" + routine.getName() + "' added.");
+        }
     }
     
     @Override
@@ -96,6 +122,9 @@ public class AddWorkoutMenu implements Menu {
                 addExercise();
             }
             
+            if (choice.equals("2")) {
+                addRoutine();
+            }
             if (choice.equals("3")) {
                 confirmSaveWorkout();
             }
@@ -113,7 +142,7 @@ public class AddWorkoutMenu implements Menu {
             }
             
             if (choice.equals("n")) {
-                MenuManager.displayMenu(new AddWorkoutMenu());
+                MenuManager.displayMenu(new MainMenu());
                 selectionMade = true;
             }
         }

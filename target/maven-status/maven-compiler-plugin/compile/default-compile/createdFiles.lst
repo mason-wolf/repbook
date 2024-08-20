@@ -1,5 +1,9 @@
-us/wolfden/workoutapp/menus/AbstractExerciseManager.class
-us/wolfden/workoutapp/repositories/FileRepository.class
+us/wolfden/workoutapp/services/RoutineServiceImpl.class
+us/wolfden/workoutapp/repositories/RoutineRepository.class
 us/wolfden/workoutapp/repositories/WorkoutRepository$1.class
 us/wolfden/workoutapp/repositories/Repository.class
+us/wolfden/workoutapp/repositories/RoutineRepository$1.class
 us/wolfden/workoutapp/repositories/WorkoutRepository.class
+us/wolfden/workoutapp/menus/AbstractExerciseManager.class
+us/wolfden/workoutapp/services/RoutineService.class
+us/wolfden/workoutapp/repositories/FileRepository.class

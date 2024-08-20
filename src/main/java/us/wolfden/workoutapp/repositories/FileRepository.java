@@ -54,7 +54,7 @@ public abstract class FileRepository<T, ID> implements Repository<T, ID> {
     public T findById(ID id) {
         List<T> items = findAll();
         return items.stream()
-                    .filter(item -> id.equals(getId(item))) // You'll need to define how to extract the ID
+                    .filter(item -> id.equals(getId(item)))
                     .findFirst()
                     .orElse(null);
     }
