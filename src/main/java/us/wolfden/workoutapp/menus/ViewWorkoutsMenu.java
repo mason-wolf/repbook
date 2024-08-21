@@ -1,6 +1,7 @@
 package us.wolfden.workoutapp.menus;
 
 import us.wolfden.workoutapp.models.Exercise;
+import us.wolfden.workoutapp.models.Cardio;
 import us.wolfden.workoutapp.models.Workout;
 import us.wolfden.workoutapp.services.WorkoutService;
 import us.wolfden.workoutapp.services.WorkoutServiceImpl;
@@ -83,14 +84,23 @@ public class ViewWorkoutsMenu implements Menu {
         int totalSets = 0;
         int totalReps = 0;
         
+        // TODO: Separate logic into smaller pieces.
         if (workout != null) {
             System.out.println();
             System.out.println("Workout: " + workout.getName()); 
             System.out.println("Date: " + workout.getDate());
-            System.out.println("Type: " + workout.getType());
-            if (!workout.getType().equals("Cardio")) {
-                System.out.println("Exercises:\n");
+
+                if (workout.getCardio() != null) {
+                    System.out.println("\nCardio:");
+                    for (Cardio cardio : workout.getCardio()) {
+                    System.out.println();
+                    System.out.println("Distance: " + cardio.getDistance());
+                    System.out.println("Time: " + cardio.getTime());
+                    System.out.println();
+                }
                 
+                }
+                // TODO: Check if exercises exist before printing.
                 for (Exercise exercise : workout.getExercises()) {
                     System.out.println();
                     System.out.println(exercise.getName());
@@ -103,7 +113,7 @@ public class ViewWorkoutsMenu implements Menu {
                 System.out.println("Total Exercises: " + totalExercises);
                 System.out.println("Total Sets: " + totalSets);
                 System.out.println("Total Reps:" + totalReps);
-            }
+            
         }
         else {
             System.out.println("Workout not found for '" + workoutId + "'.");
