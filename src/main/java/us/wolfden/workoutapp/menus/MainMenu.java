@@ -40,19 +40,19 @@ public class MainMenu implements Menu {
         if (choice.equals("1")) {
             MenuManager.displayMenu(new AddWorkoutMenu());
         }
-        
+
         if (choice.equals("2")) {
             MenuManager.displayMenu(new ViewWorkoutsMenu());
         }
-        
+
         if (choice.equals("3")) {
             MenuManager.displayMenu(new RoutineMenu());
         }
-        
+
         if (choice.equals("4")) {
             MenuManager.displayMenu(new MainMenu());
         }
-        
+
         if (choice.equals("5")) {
             System.out.println("Goodbye, work hard.");
             System.exit(0);

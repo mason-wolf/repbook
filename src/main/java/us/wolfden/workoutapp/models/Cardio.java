@@ -1,10 +1,7 @@
 package us.wolfden.workoutapp.models;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.UUID;
 

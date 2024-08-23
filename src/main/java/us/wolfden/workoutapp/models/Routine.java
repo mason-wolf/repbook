@@ -25,10 +25,11 @@ public class Routine {
         this.name = name;
         this.exercises = exercises;
     }
-    
+
     public void setExercises(ArrayList<Exercise> exercises) {
         this.exercises = exercises;
     }
-    
-    public Routine() {}
+
+    public Routine() {
+    }
 }

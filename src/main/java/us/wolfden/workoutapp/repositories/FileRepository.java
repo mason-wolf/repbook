@@ -2,6 +2,7 @@ package us.wolfden.workoutapp.repositories;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public abstract class FileRepository<T, ID> implements Repository<T, ID> {
     public T findById(ID id) {
         List<T> items = findAll();
         return items.stream()
-                    .filter(item -> id.equals(getId(item)))
-                    .findFirst()
-                    .orElse(null);
+                .filter(item -> id.equals(getId(item)))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -68,6 +69,6 @@ public abstract class FileRepository<T, ID> implements Repository<T, ID> {
         }
         return removed;
     }
-    
+
     protected abstract ID getId(T item);
 }

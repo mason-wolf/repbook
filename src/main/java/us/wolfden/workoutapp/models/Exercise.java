@@ -2,6 +2,7 @@ package us.wolfden.workoutapp.models;
 
 import lombok.Builder;
 import lombok.Data;
+
 import java.util.UUID;
 
 @Data
@@ -21,5 +22,7 @@ public class Exercise {
         this.reps = reps;
         this.weight = weight;
     }
-    public Exercise() {}
+
+    public Exercise() {
+    }
 }

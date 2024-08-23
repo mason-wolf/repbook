@@ -9,6 +9,7 @@ import us.wolfden.workoutapp.services.WorkoutService;
 import us.wolfden.workoutapp.services.WorkoutServiceImpl;
 import us.wolfden.workoutapp.services.RoutineService;
 import us.wolfden.workoutapp.services.RoutineServiceImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,7 +31,7 @@ public class AddWorkoutMenu implements Menu {
         workoutService = new WorkoutServiceImpl();
         exerciseManager = new ExerciseManager();
         options.add("1. Add Exercise");
-        options.add("2. Add Cardio");       
+        options.add("2. Add Cardio");
         options.add("3. Add Routine");
         options.add("4. Save");
         options.add("5. Back");
@@ -63,22 +64,22 @@ public class AddWorkoutMenu implements Menu {
         this.workout.setDate(workoutDate);
         options.forEach(System.out::println);
     }
-    
+
     private void addExercise() {
-                Exercise exercise = exerciseManager.addExercise();
-                workout.addExercise(exercise);
+        Exercise exercise = exerciseManager.addExercise();
+        workout.addExercise(exercise);
     }
-    
+
     private void confirmSaveWorkout() {
-                MenuManager.clearMenu();
-                System.out.println("Workout: " + workout.getName());
-                System.out.println("Date: " + workout.getDate());
-                showCardio();
-                showExercises();
-                System.out.println();
-                System.out.println("Log this workout? (y/n)");  
+        MenuManager.clearMenu();
+        System.out.println("Workout: " + workout.getName());
+        System.out.println("Date: " + workout.getDate());
+        showCardio();
+        showExercises();
+        System.out.println();
+        System.out.println("Log this workout? (y/n)");
     }
-    
+
     private void showCardio() {
         workout.getCardio().forEach(c -> {
             System.out.println();
@@ -88,17 +89,17 @@ public class AddWorkoutMenu implements Menu {
             System.out.println();
         });
     }
-    
+
     private void showExercises() {
-                 workout.getExercises().forEach(e -> {
-                    System.out.println();
-                    System.out.println("Exercise: " + e.getName());
-                    System.out.println("Sets: " + e.getSets());
-                    System.out.println("Reps: " + e.getReps());
-                    System.out.println();
-                });       
+        workout.getExercises().forEach(e -> {
+            System.out.println();
+            System.out.println("Exercise: " + e.getName());
+            System.out.println("Sets: " + e.getSets());
+            System.out.println("Reps: " + e.getReps());
+            System.out.println();
+        });
     }
-    
+
     private void addRoutine() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Routine ID: ");
@@ -106,8 +107,7 @@ public class AddWorkoutMenu implements Menu {
         Routine routine = routineService.getRoutineById(routineId);
         if (routine == null) {
             System.out.println("Routine with ID " + routineId + " not found.");
-        }
-        else {
+        } else {
             for (Exercise exercise : routine.getExercises()) {
                 workout.addExercise(exercise);
             }
@@ -115,7 +115,7 @@ public class AddWorkoutMenu implements Menu {
             System.out.println("Routine '" + routine.getName() + "' added.");
         }
     }
-    
+
     private void addCardio() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Name: ");
@@ -125,59 +125,59 @@ public class AddWorkoutMenu implements Menu {
         System.out.print("Time: ");
         String time = scanner.nextLine();
         Cardio cardio = Cardio.builder()
-                        .name(name)
-                        .distance(Double.parseDouble(distance))
-                        .time(time)
-                        .build();
+                .name(name)
+                .distance(Double.parseDouble(distance))
+                .time(time)
+                .build();
         System.out.println("Added cardio '" + cardio.getName() + "'.");
         workout.addCardio(cardio);
     }
-    
+
     @Override
     public void handleSelection() {
         newWorkout();
-        
+
         boolean selectionMade = false;
-        
+
         Scanner scanner = new Scanner(System.in);
 
-        while(!selectionMade) {
+        while (!selectionMade) {
             String choice = scanner.nextLine();
             System.out.print("> ");
-            
+
             if (choice.equals("1")) {
                 addExercise();
             }
-            
+
             if (choice.equals("2")) {
                 addCardio();
             }
-            
+
             if (choice.equals("3")) {
                 addRoutine();
             }
-            
+
             if (choice.equals("4")) {
                 confirmSaveWorkout();
             }
-            
+
             if (choice.equals("5")) {
                 MenuManager.displayMenu(new MainMenu());
                 selectionMade = true;
             }
-            
+
             if (choice.equals("y")) {
                 System.out.println("Saving workout '" + workout.getName() + "'.");
                 workoutService.saveWorkout(workout);
                 MenuManager.displayMenu(new MainMenu());
                 selectionMade = true;
             }
-            
+
             if (choice.equals("n")) {
                 MenuManager.displayMenu(new MainMenu());
                 selectionMade = true;
             }
         }
-                            
+
     }
 }
