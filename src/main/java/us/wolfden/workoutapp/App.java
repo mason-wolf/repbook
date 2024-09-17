@@ -2,13 +2,16 @@ package us.wolfden.workoutapp;
 
 import us.wolfden.workoutapp.menus.MainMenu;
 import us.wolfden.workoutapp.menus.MenuManager;
+import us.wolfden.workoutapp.repositories.WorkoutDbRepositoryImpl;
 
 public class App 
 {
     public static void main( String[] args )
     {
-        MenuManager.clearMenu();
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.display();
+        WorkoutDbRepositoryImpl workoutDb = new WorkoutDbRepositoryImpl();
+        workoutDb.createTable();
+//        MenuManager.clearMenu();
+//        MainMenu mainMenu = new MainMenu();
+//        mainMenu.display();
     }
 }

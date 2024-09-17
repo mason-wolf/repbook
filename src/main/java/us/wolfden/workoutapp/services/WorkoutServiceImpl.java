@@ -1,7 +1,7 @@
 package us.wolfden.workoutapp.services;
 
 import us.wolfden.workoutapp.models.Workout;
-import us.wolfden.workoutapp.repositories.WorkoutRepository;
+import us.wolfden.workoutapp.repositories.WorkoutFileRepositoryImpl;
 
 import java.util.List;
 
@@ -12,27 +12,27 @@ import java.util.stream.Collectors;
 
 public class WorkoutServiceImpl implements WorkoutService {
 
-    private final WorkoutRepository workoutRepository;
+    private final WorkoutFileRepositoryImpl workoutFileRepository;
 
     public WorkoutServiceImpl() {
-        this.workoutRepository = new WorkoutRepository();
+        this.workoutFileRepository = new WorkoutFileRepositoryImpl();
     }
 
     @Override
     public void saveWorkouts(List<Workout> workouts) {
-        workoutRepository.save(workouts);
+        workoutFileRepository.save(workouts);
     }
 
     @Override
     public void saveWorkout(Workout workout) {
-        workoutRepository.save(workout);
+        workoutFileRepository.save(workout);
     }
 
     @Override
     public List<Workout> getWorkouts() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
 
-        return workoutRepository.findAll().stream()
+        return workoutFileRepository.findAll().stream()
                 .sorted(Comparator.comparing(workout -> LocalDate.parse(workout.getDate(), formatter)))
                 .collect(Collectors.toList());
 
@@ -40,11 +40,11 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public Workout getWorkoutById(String workoutId) {
-        return workoutRepository.findById(workoutId);
+        return workoutFileRepository.findById(workoutId);
     }
 
     @Override
     public boolean deleteWorkoutById(String workoutId) {
-        return workoutRepository.deleteById(workoutId);
+        return workoutFileRepository.deleteById(workoutId);
     }
 }

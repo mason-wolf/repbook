@@ -1,40 +1,40 @@
 package us.wolfden.workoutapp.services;
 
 import us.wolfden.workoutapp.models.Routine;
-import us.wolfden.workoutapp.repositories.RoutineRepository;
+import us.wolfden.workoutapp.repositories.RoutineFileRepositoryImpl;
 
 import java.util.List;
 
 public class RoutineServiceImpl implements RoutineService {
 
-    private final RoutineRepository routineRepository;
+    private final RoutineFileRepositoryImpl routineFileRepository;
 
     public RoutineServiceImpl() {
-        this.routineRepository = new RoutineRepository();
+        this.routineFileRepository = new RoutineFileRepositoryImpl();
     }
 
     @Override
     public void saveRoutines(List<Routine> routines) {
-        routineRepository.save(routines);
+        routineFileRepository.save(routines);
     }
 
     @Override
     public void saveRoutine(Routine routine) {
-        routineRepository.save(routine);
+        routineFileRepository.save(routine);
     }
 
     @Override
     public List<Routine> getRoutines() {
-        return routineRepository.findAll();
+        return routineFileRepository.findAll();
     }
 
     @Override
     public Routine getRoutineById(String routineId) {
-        return routineRepository.findById(routineId);
+        return routineFileRepository.findById(routineId);
     }
 
     @Override
     public boolean deleteRoutineById(String routineId) {
-        return routineRepository.deleteById(routineId);
+        return routineFileRepository.deleteById(routineId);
     }
 }
