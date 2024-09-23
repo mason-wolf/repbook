@@ -12,8 +12,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class Workout {
-    @Builder.Default
-    private String id = UUID.randomUUID().toString();
+    private int id;
     private String name;
     private String type;
     private String date;
@@ -27,7 +26,7 @@ public class Workout {
     private List<Cardio> cardio = new ArrayList<>();
 
     public Workout(
-            String id,
+            int id,
             String name,
             String type,
             String date,
@@ -45,6 +44,9 @@ public class Workout {
     }
 
     public void addExercise(Exercise exercise) {
+        if (this.exercises == null) {
+            this.exercises = new ArrayList<Exercise>();
+        }
         this.exercises.add(exercise);
     }
 

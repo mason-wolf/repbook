@@ -14,6 +14,7 @@ public class WorkoutFileRepositoryImpl extends FileRepositoryImpl<Workout, Strin
 
     @Override
     protected String getId(Workout workout) {
-        return workout.getId();
+        return "";
+       // return workout.getId();
     }
 }
