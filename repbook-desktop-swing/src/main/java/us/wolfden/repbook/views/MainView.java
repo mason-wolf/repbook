@@ -5,6 +5,8 @@ import us.wolfden.repbook.services.WorkoutServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainView {
     private JPanel rootPanel;
@@ -17,6 +19,14 @@ public class MainView {
         frame.setSize(800, 500);
         frame.setLocationRelativeTo(null);
         workoutsTable.setModel(viewModel.getTableModel());
+        addWorkoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame addWorkoutFrame = new JFrame("Add Workout");
+                AddWorkoutView addWorkoutView = new AddWorkoutView(addWorkoutFrame);
+                addWorkoutFrame.setVisible(true);
+            }
+        });
     }
 
     public JPanel getRootPanel() {

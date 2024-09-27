@@ -150,7 +150,7 @@ public class WorkoutDbRepositoryImpl implements DbRepository<Workout> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
     String sql = "DELETE FROM workouts WHERE id = ?";
 
     try (Connection conn = this.connect(); 
@@ -168,5 +168,6 @@ public class WorkoutDbRepositoryImpl implements DbRepository<Workout> {
     } catch (SQLException e) {
         System.out.println(e.getMessage());
     }
+        return true;
     }
 }

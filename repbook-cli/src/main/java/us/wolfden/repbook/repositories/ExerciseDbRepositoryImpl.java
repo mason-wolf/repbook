@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.sql.DriverManager;
 import java.util.List;
 import java.util.Optional;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -149,7 +148,7 @@ public class ExerciseDbRepositoryImpl implements DbRepository<Exercise> {
 	}
 
 	@Override
-	public void delete(int id) {
+	public boolean delete(int id) {
 		String sql = "DELETE from exercises WHERE id = ?";
 		
 		try (Connection conn = this.connect()) {
@@ -165,6 +164,7 @@ public class ExerciseDbRepositoryImpl implements DbRepository<Exercise> {
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+		return false;
 	}
     
 }

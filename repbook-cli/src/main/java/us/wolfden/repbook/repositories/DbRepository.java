@@ -8,5 +8,5 @@ public interface DbRepository<T> {
     Optional<T> read(int id);
     List<T> readAll();
     void update(T entity);
-    void delete(int id);
+    boolean delete(int id);
 }

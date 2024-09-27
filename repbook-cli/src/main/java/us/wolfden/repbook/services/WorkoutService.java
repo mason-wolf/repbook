@@ -15,4 +15,6 @@ public interface WorkoutService {
     Workout getWorkoutById(String workoutId);
 
     boolean deleteWorkoutById(String workoutId);
+
+    boolean deleteWorkoutById(int workoutId);
 }
