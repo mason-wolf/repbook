@@ -1,13 +1,13 @@
 package us.wolfden.repbook.views;
 
+import us.wolfden.repbook.listeners.CardioDataListener;
 import us.wolfden.repbook.listeners.ExerciseDataListener;
-import us.wolfden.repbook.models.Exercise;
-import us.wolfden.repbook.models.ExerciseTableModel;
+import us.wolfden.repbook.listeners.WorkoutDataListener;
+import us.wolfden.repbook.models.*;
 import us.wolfden.repbook.services.WorkoutServiceImpl;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
 
-public class AddWorkoutView implements ExerciseDataListener {
+public class AddWorkoutView implements ExerciseDataListener, CardioDataListener {
     private JPanel rootPanel;
     private JTextField workoutName;
     private JComboBox<String> workoutType;
@@ -27,16 +27,22 @@ public class AddWorkoutView implements ExerciseDataListener {
     private JButton addExerciseBtn;
     private JButton selectRoutineBtn;
     private JButton addCardioBtn;
-    private JList cardioList;
     private JButton addWorkoutButton;
     private JPanel workoutDetailsPanel;
     private JTable exerciseTable;
-    private ArrayList<Exercise> exerciseList = new ArrayList<>();
+    private JTable cardioTable;
+    private final ArrayList<Exercise> exerciseList = new ArrayList<>();
+    private final ArrayList<Cardio> cardioList = new ArrayList<>();
+    private final WorkoutServiceImpl workoutService;
+    private boolean validWorkout;
+    private final Workout workout = new Workout();
+    private final JFrame frame;
+    private final WorkoutDataListener listener;
 
-    private WorkoutServiceImpl workoutService;
-
-    public AddWorkoutView(JFrame frame) {
+    public AddWorkoutView(WorkoutDataListener listener, JFrame frame) {
+        this.listener = listener;
         workoutService = new WorkoutServiceImpl();
+        this.frame = frame;
         frame.setContentPane(rootPanel);
         frame.setSize(500, 400);
         frame.setLocationRelativeTo(null);
@@ -45,6 +51,40 @@ public class AddWorkoutView implements ExerciseDataListener {
         handleAddDate();
         handleAddExercise();
         handleEditExercise();
+        handleEditCardio();
+        this.handleAddCardio();
+    }
+
+    private void handleAddCardio() {
+        addCardioBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame addCardioFrame = new JFrame("Add Cardio");
+                AddCardioView addCardioView = new AddCardioView(null, addCardioFrame, AddWorkoutView.this);
+                addCardioFrame.setVisible(true);
+            }
+        });
+    }
+
+    private void handleEditCardio() {
+        cardioTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int row = cardioTable.getSelectedRow();
+                    if (row != -1) {
+                        String cardioName = (String) cardioTable.getValueAt(row, 0);
+                        Optional<Cardio> optionalCardio = getCardioByName(cardioName);
+                        if (optionalCardio.isPresent()) {
+                            Cardio cardio = optionalCardio.get();
+                            JFrame addCardioFrame = new JFrame("Edit Cardio");
+                            AddCardioView addCardioView = new AddCardioView(cardio, addCardioFrame, AddWorkoutView.this);
+                            addCardioFrame.setVisible(true);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void handleEditExercise() {
@@ -66,6 +106,12 @@ public class AddWorkoutView implements ExerciseDataListener {
                 }
             }
         });
+    }
+
+    private Optional<Cardio> getCardioByName(String name) {
+        return cardioList.stream()
+                .filter(cardio -> cardio.getName().equalsIgnoreCase(name))
+                .findFirst();
     }
 
     private Optional<Exercise> getExerciseByName(String name) {
@@ -96,7 +142,7 @@ public class AddWorkoutView implements ExerciseDataListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedValue = (String) workoutType.getSelectedItem();
-                System.out.println(selectedValue);
+                workout.setType(selectedValue);
             }
         });
     }
@@ -116,16 +162,30 @@ public class AddWorkoutView implements ExerciseDataListener {
         return workoutDate.getText();
     }
 
+
     private void handleAddWorkout() {
         addWorkoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String workName = workoutName.getText();
-                System.out.println(workName);
                 String date = handleAddDate();
-                System.out.println(date);
                 if (!isValidDate(date)) {
+                    validWorkout = false;
                     JOptionPane.showMessageDialog(null, "Invalid date. Must be mm/dd/yyyy format.", "Date Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    validWorkout = true;
+                }
+                String selectedValue = (String) workoutType.getSelectedItem();
+                workout.setType(selectedValue);
+                workout.setName(workName);
+                workout.setDate(date);
+                workout.setExercises(exerciseList);
+                workout.setCardio(cardioList);
+                if (validWorkout) {
+                    workoutService.saveWorkout(workout);
+                    listener.onWorkoutDataAdded(workout);
+                    frame.dispose();
                 }
             }
         });
@@ -193,8 +253,6 @@ public class AddWorkoutView implements ExerciseDataListener {
         final JLabel label5 = new JLabel();
         label5.setText("Cardio:");
         workoutDetailsPanel.add(label5, new com.intellij.uiDesigner.core.GridConstraints(5, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        cardioList = new JList();
-        workoutDetailsPanel.add(cardioList, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
         addWorkoutButton = new JButton();
         addWorkoutButton.setText("Add Workout");
         workoutDetailsPanel.add(addWorkoutButton, new com.intellij.uiDesigner.core.GridConstraints(6, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -202,6 +260,10 @@ public class AddWorkoutView implements ExerciseDataListener {
         workoutDetailsPanel.add(scrollPane1, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         exerciseTable = new JTable();
         scrollPane1.setViewportView(exerciseTable);
+        final JScrollPane scrollPane2 = new JScrollPane();
+        workoutDetailsPanel.add(scrollPane2, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        cardioTable = new JTable();
+        scrollPane2.setViewportView(cardioTable);
     }
 
     /**
@@ -215,5 +277,50 @@ public class AddWorkoutView implements ExerciseDataListener {
     public void onExerciseDataAdded(Exercise exercise) {
         this.exerciseList.add(exercise);
         exerciseTable.setModel(new ExerciseTableModel(this.exerciseList));
+    }
+
+    @Override
+    public void onExerciseDataEdited(Exercise exercise) {
+        this.exerciseList.stream()
+                .filter(e -> e.getName().equalsIgnoreCase(exercise.getName()))
+                .findFirst()
+                .ifPresent(e -> {
+                    e.setName(exercise.getName());
+                    e.setSets(exercise.getSets());
+                    e.setReps(exercise.getReps());
+                });
+        this.exerciseTable.setModel(new ExerciseTableModel(this.exerciseList));
+    }
+
+    @Override
+    public void onExerciseDataDeleted(Exercise exercise) {
+        this.exerciseList.removeIf(e -> e.getName().equalsIgnoreCase(exercise.getName()));
+        this.exerciseTable.setModel(new ExerciseTableModel(this.exerciseList));
+    }
+
+    @Override
+    public void onCardioDataAdded(Cardio cardio) {
+        this.cardioList.add(cardio);
+        cardioTable.setModel(new CardioTableModel(this.cardioList));
+
+    }
+
+    @Override
+    public void onCardioDataEdited(Cardio cardio) {
+        this.cardioList.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(cardio.getName()))
+                .findFirst()
+                .ifPresent(c -> {
+                    c.setName(cardio.getName());
+                    c.setDistance(cardio.getDistance());
+                    c.setTime(cardio.getTime());
+                });
+        this.cardioTable.setModel(new CardioTableModel(this.cardioList));
+    }
+
+    @Override
+    public void onCardioDataDeleted(Cardio cardio) {
+        this.cardioList.removeIf(c -> c.getName().equalsIgnoreCase(cardio.getName()));
+        this.cardioTable.setModel(new CardioTableModel(this.cardioList));
     }
 }

@@ -1,5 +1,8 @@
 package us.wolfden.repbook.views;
 
+import us.wolfden.repbook.listeners.WorkoutDataListener;
+import us.wolfden.repbook.models.Exercise;
+import us.wolfden.repbook.models.Workout;
 import us.wolfden.repbook.models.WorkoutViewModel;
 import us.wolfden.repbook.services.WorkoutServiceImpl;
 
@@ -7,28 +10,64 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Optional;
 
-public class MainView {
+public class MainView implements WorkoutDataListener {
     private JPanel rootPanel;
     private JTabbedPane tabbedPane1;
     private JTable workoutsTable;
     private JButton addWorkoutButton;
+    private WorkoutViewModel viewModel;
 
     public MainView(JFrame frame, WorkoutViewModel viewModel) {
         frame.setContentPane(rootPanel);
         frame.setSize(800, 500);
         frame.setLocationRelativeTo(null);
-        workoutsTable.setModel(viewModel.getTableModel());
-        addWorkoutButton.addActionListener(new ActionListener() {
+        this.viewModel = viewModel;
+        handleViewWorkouts();
+        handleViewWorkout();
+        handleAddWorkout();
+    }
+
+    private void handleViewWorkout() {
+        workoutsTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame addWorkoutFrame = new JFrame("Add Workout");
-                AddWorkoutView addWorkoutView = new AddWorkoutView(addWorkoutFrame);
-                addWorkoutFrame.setVisible(true);
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    JFrame viewWorkoutFrame = new JFrame("Workout");
+                    ViewWorkoutView viewWorkoutView = new ViewWorkoutView(viewWorkoutFrame);
+                    viewWorkoutFrame.setVisible(true);
+                    int row = workoutsTable.getSelectedRow();
+                    if (row != -1) {
+//                        String exerciseName = (String) workoutsTable.getValueAt(row, 0);
+//                        Optional<Exercise> optionalExercise = getExerciseByName(exerciseName);
+//                        if (optionalExercise.isPresent()) {
+//                            Exercise exercise = optionalExercise.get();
+//                            JFrame addExerciseFrame = new JFrame("Edit Exercise");
+//                            AddExerciseView addExerciseView = new AddExerciseView(exercise, AddWorkoutView.this, addExerciseFrame);
+//                            addExerciseFrame.setVisible(true);
+//                        }
+                    }
+                }
             }
         });
     }
 
+    private void handleAddWorkout() {
+        addWorkoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame addWorkoutFrame = new JFrame("Add Workout");
+                AddWorkoutView addWorkoutView = new AddWorkoutView(MainView.this, addWorkoutFrame);
+                addWorkoutFrame.setVisible(true);
+            }
+        });
+    }
+    private void handleViewWorkouts() {
+        workoutsTable.setModel(viewModel.getTableModel());
+    }
     public JPanel getRootPanel() {
         return rootPanel;
     }
@@ -78,5 +117,11 @@ public class MainView {
      */
     public JComponent $$$getRootComponent$$$() {
         return rootPanel;
+    }
+
+    @Override
+    public void onWorkoutDataAdded(Workout workout) {
+        WorkoutViewModel viewModel = new WorkoutViewModel();
+        workoutsTable.setModel(viewModel.getTableModel());
     }
 }

@@ -170,4 +170,24 @@ public class WorkoutDbRepositoryImpl implements DbRepository<Workout> {
     }
         return true;
     }
+
+    public boolean deleteAll() {
+        String sql = "DELETE FROM workouts";
+
+        try (Connection conn = this.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            int affectedRows = pstmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println(affectedRows + " workout(s) deleted successfully.");
+            } else {
+                System.out.println("No workouts to delete.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return true;
+    }
+
 }

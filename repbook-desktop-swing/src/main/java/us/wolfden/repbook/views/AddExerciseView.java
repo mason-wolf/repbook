@@ -19,10 +19,12 @@ public class AddExerciseView {
     private JTextField reps;
     private JButton addExerciseBtn;
     private JButton cancelBtn;
+    private JButton deleteBtn;
     private ExerciseDataListener listener;
     private Exercise exercise;
     private JFrame frame;
     private boolean editMode = false;
+    private boolean validExerciseData = true;
 
     public AddExerciseView(Exercise exercise, ExerciseDataListener exerciseDataListener, JFrame frame) {
         this.listener = exerciseDataListener;
@@ -32,31 +34,66 @@ public class AddExerciseView {
         this.frame = frame;
         handleCancel();
         handleAddExercise();
-        if (exercise != null) {
-            handleEditExercise();
-            editMode = true;
-        }
 
-        if (editMode) {
-            addExerciseBtn.setText("Save Exercise");
+        if (exercise != null) {
+            this.exercise = exercise;
+            handleEditExercise();
         }
     }
 
     private void handleEditExercise() {
-        System.out.println("edit mode");
+        editMode = true;
+        this.exerciseName.setText(this.exercise.getName());
+        this.sets.setText(String.valueOf(this.exercise.getSets()));
+        this.reps.setText(String.valueOf(this.exercise.getReps()));
+        this.deleteBtn.setVisible(true);
+        addExerciseBtn.setText("Save Exercise");
+        this.handleDelete();
+    }
+
+    private void handleDelete() {
+        deleteBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listener.onExerciseDataDeleted(exercise);
+                frame.dispose();
+            }
+        });
+    }
+
+    private Exercise getExerciseDetails() {
+        String exerciseTitle = exerciseName.getText();
+        String numSets = sets.getText();
+        String numReps = reps.getText();
+        Exercise exercise = new Exercise();
+        exercise.setName(exerciseTitle);
+        try {
+            exercise.setReps(Integer.parseInt(numReps));
+            exercise.setSets(Integer.parseInt(numSets));
+            validExerciseData = true;
+        } catch (NumberFormatException e) {
+            validExerciseData = false;
+            JOptionPane.showMessageDialog(null, "Invalid data for sets/reps.", "Invalid Data", JOptionPane.ERROR_MESSAGE);
+        }
+        return exercise;
     }
 
     private void handleAddExercise() {
         addExerciseBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Exercise exercise = new Exercise();
-                exercise.setName("test exercise");
-                listener.onExerciseDataAdded(exercise);
-                frame.dispose();
+                Exercise exercise = getExerciseDetails();
+                if (validExerciseData && !editMode) {
+                    listener.onExerciseDataAdded(exercise);
+                    frame.dispose();
+                } else if (validExerciseData) {
+                    listener.onExerciseDataEdited(exercise);
+                    frame.dispose();
+                }
             }
         });
     }
+
     private void handleCancel() {
         cancelBtn.addActionListener(new ActionListener() {
             @Override
@@ -65,6 +102,7 @@ public class AddExerciseView {
             }
         });
     }
+
     public JPanel getRootPanel() {
         return rootPanel;
     }
@@ -111,13 +149,15 @@ public class AddExerciseView {
         addExerciseBtn = new JButton();
         addExerciseBtn.setLabel("Add Exercise");
         addExerciseBtn.setText("Add Exercise");
-        panel2.add(addExerciseBtn, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        panel2.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        panel2.add(addExerciseBtn, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         cancelBtn = new JButton();
         cancelBtn.setLabel("Cancel");
         cancelBtn.setText("Cancel");
-        panel2.add(cancelBtn, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel2.add(cancelBtn, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        deleteBtn = new JButton();
+        deleteBtn.setText("Delete");
+        deleteBtn.setVisible(false);
+        panel2.add(deleteBtn, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -126,4 +166,5 @@ public class AddExerciseView {
     public JComponent $$$getRootComponent$$$() {
         return rootPanel;
     }
+
 }
